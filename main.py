@@ -25,7 +25,7 @@ def get_oauth_handler():
     print(accses_token)
     print(accses_secret)
     print(f"Domain: {domain}")
-    return tweepy.OAuth1UserHandler(consumer_key=api_key, consumer_secret=api_secret, callback=f"{domain}/auth/callback")
+    return tweepy.OAuth1UserHandler(consumer_key=api_key, consumer_secret=api_secret, callback=f"https://{domain}/auth/callback")
 
 oauth_sessions = {}
 
