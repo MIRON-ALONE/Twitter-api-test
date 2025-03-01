@@ -1,15 +1,24 @@
 import tweepy
 import os
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
-client = tweepy.Client
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5501"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 api_key = os.getenv('API_KEY')
 api_secret = os.getenv('API_SECRET')
 accses_token = os.getenv('ACCESS_TOKEN')
 accses_secret = os.getenv('ACCESS_SECRET')
-domain = "http://localhost:8000" # os.getenv('RAILWAY_PUBLIC_DOMAIN')
+domain = os.getenv('RAILWAY_PUBLIC_DOMAIN')
 def get_oauth_handler():
     print(api_key)
     print(api_secret)
