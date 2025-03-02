@@ -2,6 +2,7 @@ import tweepy
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
 
 app = FastAPI()
@@ -49,6 +50,30 @@ async def auth_callback(oauth_token: str, oauth_verifier: str):
         "oauth_token_secret": oauth_sessions.pop(oauth_token),
     }
     access_token, access_token_secret = auth.get_access_token(oauth_verifier)
+ 
+    response = JSONResponse(status_code=200, content={"access_token": access_token})
+    response.set_cookie(
+        key="access_token",
+        value=access_token,
+        httponly=True,
+        max_age=3600,
+        secure=True,
+        samesite="none",
+    )
+#временное решение, лучше хранить данные о access_token_secret, oauth_token_secret в базе данных
+    response.set_cookie(
+        key="access_token_secret",
+        value=access_token_secret,
+        httponly=True,
+        max_age=3600,
+        secure=True,
+        samesite="none",
+    )
+
+    return response
+
+
+
     client = tweepy.Client(   
         consumer_key=api_key,
         consumer_secret=api_secret,
