@@ -22,12 +22,7 @@ accses_token = os.getenv('ACCESS_TOKEN')
 accses_secret = os.getenv('ACCESS_SECRET')
 domain = os.getenv('RAILWAY_PUBLIC_DOMAIN')
 def get_oauth_handler():
-    print(api_key)
-    print(api_secret)
-    print(accses_token)
-    print(accses_secret)
-    print(f"Domain: {domain}")
-    return tweepy.OAuth1UserHandler(consumer_key=api_key, consumer_secret=api_secret, callback=f"https://{domain}/auth/callback")
+    return tweepy.OAuth1UserHandler(consumer_key=api_key, consumer_secret=api_secret, callback="http://localhost:5501/index.html")
 
 oauth_sessions = {}
 
@@ -91,5 +86,5 @@ async def like_tweet(request: Request, id:int):
         tweet_id=id,
         user_auth=True
     )
-    
+
     return response
