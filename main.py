@@ -1,8 +1,9 @@
 import tweepy
 import os
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+
 
 
 app = FastAPI()
@@ -73,6 +74,11 @@ async def auth_callback(oauth_token: str, oauth_verifier: str):
     return response
 
 
+@app.post("/tweets/{id}/like")
+async def like_tweet(request: Request, id:int):
+    access_token = request.cookies.get("access_token")
+    access_token_secret = request.cookies.get("access_token_secret")
+
 
     client = tweepy.Client(   
         consumer_key=api_key,
@@ -82,8 +88,8 @@ async def auth_callback(oauth_token: str, oauth_verifier: str):
     )
     
     response = client.like(
-        tweet_id="1878132133144715658",
+        tweet_id=id,
         user_auth=True
     )
-    print(f"-------------- access_token: {access_token}")
+    
     return response
