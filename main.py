@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 
-
 app = FastAPI()
 
 app.add_middleware(
@@ -55,6 +54,7 @@ async def auth_callback(oauth_token: str, oauth_verifier: str):
         max_age=3600,
         secure=True,
         samesite="none",
+        path="/"
     )
 #временное решение, лучше хранить данные о access_token_secret, oauth_token_secret в базе данных
     response.set_cookie(
@@ -64,6 +64,7 @@ async def auth_callback(oauth_token: str, oauth_verifier: str):
         max_age=3600,
         secure=True,
         samesite="none",
+        path="/"
     )
 
     return response
